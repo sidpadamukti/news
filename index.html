@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SID - Sistem Informasi Desa Padamukti</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'] },
+          colors: {
+            desa: {
+              50: '#eef7f0',
+              100: '#d5ead9',
+              200: '#aed6b6',
+              300: '#7cb98a',
+              400: '#4a9c5f',
+              500: '#2d7d45',
+              600: '#1f6435',
+              700: '#1a522d',
+              800: '#164125',
+              900: '#0f2e1a',
+              950: '#081a0e',
+            },
+            gold: {
+              400: '#d4a843',
+              500: '#c9a84c',
+              600: '#b8943f',
+            },
+            navy: {
+              800: '#1a2332',
+              900: '#0f1720',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::selection { background: #2d7d45; color: #fff; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeSlideLeft {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes countUp {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-up { animation: fadeSlideUp 0.8s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .animate-fade-left { animation: fadeSlideLeft 0.8s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .animate-count { animation: countUp 0.6s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .animate-slide-down { animation: slideDown 0.3s ease forwards; }
+
+    .delay-100 { animation-delay: 100ms; }
+    .delay-200 { animation-delay: 200ms; }
+    .delay-300 { animation-delay: 300ms; }
+    .delay-400 { animation-delay: 400ms; }
+    .delay-500 { animation-delay: 500ms; }
+    .delay-600 { animation-delay: 600ms; }
+
+    .observe-fade { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.22,1,0.36,1); }
+    .observe-fade.visible { opacity: 1; transform: translateY(0); }
+
+    .menu-item { position: relative; }
+    .menu-item::after {
+      content: ''; position: absolute; bottom: -2px; left: 50%; width: 0; height: 2px;
+      background: #c9a84c; transition: all 0.3s ease; transform: translateX(-50%);
+    }
+    .menu-item:hover::after { width: 100%; }
+
+    .hero-slide { transition: opacity 1s ease-in-out; }
+
+    .stat-card:hover .stat-icon {
+      transform: scale(1.15) rotate(5deg);
+    }
+    .stat-icon { transition: transform 0.4s cubic-bezier(0.22,1,0.36,1); }
+
+    .news-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.15); }
+    .news-card { transition: all 0.4s cubic-bezier(0.22,1,0.36,1); }
+
+    .gallery-item:hover img { transform: scale(1.08); }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-item img { transition: transform 0.6s cubic-bezier(0.22,1,0.36,1); }
+    .gallery-overlay { transition: opacity 0.4s ease; }
+
+    .service-card:hover { transform: translateY(-4px); border-color: #2d7d45; }
+    .service-card { transition: all 0.3s ease; }
+
+    .dropdown-menu { display: none; }
+    .dropdown:hover .dropdown-menu { display: block; }
+
+    .marquee-track {
+      display: flex; gap: 3rem;
+      animation: marquee 30s linear infinite;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .top-bar-gradient {
+      background: linear-gradient(135deg, #0f2e1a 0%, #1a522d 50%, #164125 100%);
+    }
+
+    .glass-nav {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #1f6435, #2d7d45);
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #1a522d, #1f6435);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -4px rgba(45,125,69,0.4);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #c9a84c, #d4a843);
+      color: #1a2332;
+      transition: all 0.3s ease;
+    }
+    .btn-gold:hover {
+      background: linear-gradient(135deg, #b8943f, #c9a84c);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -4px rgba(201,168,76,0.4);
+    }
+
+    .section-divider {
+      background: linear-gradient(90deg, transparent, #2d7d45, transparent);
+      height: 3px;
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #2d7d45; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #1a522d; }
+
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    .mobile-menu.open {
+      transform: translateX(0);
+    }
+  </style>
+</head>
+<body class="bg-white text-neutral-800 antialiased">
+
+  <!-- ===== TOP BAR ===== -->
+  <div class="top-bar-gradient text-white text-xs py-2 relative overflow-hidden">
+    <div class="max-w-screen-2xl mx-auto px-6 lg:px-10 flex items-center justify-between relative z-10">
+      <div class="flex items-center gap-4">
+        <span class="flex items-center gap-1.5">
+          <iconify-icon icon="solar:phone-bold" width="13"></iconify-icon>
+          (021) 8765-4321
+        </span>
+        <span class="hidden sm:flex items-center gap-1.5">
+          <iconify-icon icon="solar:letter-bold" width="13"></iconify-icon>
+          desa@padamukti.desa.id
+        </span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="hidden md:flex items-center gap-1.5">
+          <iconify-icon icon="solar:map-point-bold" width="13"></iconify-icon>
+          Kec. Pasawahan, Kab. Purwakarta, Jawa Barat
+        </span>
+        <div class="flex items-center gap-2 ml-3 pl-3 border-l border-white/20">
+          <a href="#" class="hover:text-gold-400 transition-colors"><iconify-icon icon="mdi:facebook" width="15"></iconify-icon></a>
+          <a href="#" class="hover:text-gold-400 transition-colors"><iconify-icon icon="mdi:instagram" width="15"></iconify-icon></a>
+          <a href="#" class="hover:text-gold-400 transition-colors"><iconify-icon icon="mdi:youtube" width="15"></iconify-icon></a>
+          <a href="#" class="hover:text-gold-400 transition-colors"><iconify-icon icon="mdi:twitter" width="15"></iconify-icon></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="bg-white border-b border-neutral-100 relative z-50">
+    <div class="max-w-screen-2xl mx-auto px-6 lg:px-10 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-4">
+        <div class="w-14 h-14 md:w-16 md:h-16 rounded-full border-2 border-desa-600 flex items-center justify-center bg-desa-50 flex-shrink-0">
+          <iconify-icon icon="solar:buildings-bold" width="28" class="text-desa-700"></iconify-icon>
+        </div>
+        <div>
+          <h1 class="text-lg md:text-xl font-bold text-desa-900 leading-tight tracking-tight">Pemerintah Desa</h1>
+          <h2 class="text-xl md:text-2xl font-extrabold text-desa-800 leading-none tracking-tight">PADAMUKTI</h2>
+          <p class="text-[10px] text-neutral-500 tracking-widest uppercase font-semibold mt-0.5">Kec. Pasawahan — Kab. Purwakarta</p>
+        </div>
+      </a>
+      <!-- Search (desktop) -->
+      <div class="hidden lg:flex items-center gap-3">
+        <div class="relative">
+          <input type="text" placeholder="Cari informasi..." class="w-56 pl-9 pr-4 py-2 text-sm border border-neutral-200 rounded-full bg-neutral-50 focus:outline-none focus:border-desa-500 focus:ring-2 focus:ring-desa-100 transition-all">
+          <iconify-icon icon="solar:magnifer-linear" width="16" class="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400"></iconify-icon>
+        </div>
+      </div>
+      <!-- Mobile burger -->
+      <button id="mobileMenuBtn" class="lg:hidden p-2 text-desa-800">
+        <iconify-icon icon="solar:hamburger-menu-linear" width="24"></iconify-icon>
+      </button>
+    </div>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="hidden lg:block border-t border-neutral-100 bg-white">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-10">
+        <ul class="flex items-center gap-0 text-sm font-semibold">
+          <li><a href="#beranda" class="menu-item block px-5 py-3.5 text-desa-700 hover:text-desa-900 bg-desa-50/50">Beranda</a></li>
+          <li class="dropdown relative">
+            <a href="#profil" class="menu-item flex items-center gap-1 px-5 py-3.5 text-neutral-600 hover:text-desa-700">Profil Desa <iconify-icon icon="solar:alt-arrow-down-linear" width="14"></iconify-icon></a>
+            <ul class="dropdown-menu absolute top-full left-0 bg-white border border-neutral-100 rounded-lg shadow-lg py-2 min-w-[200px] animate-slide-down z-50">
+              <li><a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-neutral-600 hover:bg-desa-50 hover:text-desa-700"><iconify-icon icon="solar:document-text-linear" width="16"></iconify-icon>Sejarah Desa</a></li>
+              <li><a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-neutral-600 hover:bg-desa-50 hover:text-desa-700"><iconify-icon icon="solar:map-linear" width="16"></iconify-icon>Wilayah Desa</a></li>
+              <li><a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-neutral-600 hover:bg-desa-50 hover:text-desa-700"><iconify-icon icon="solar:users-group-rounded-linear" width="16"></iconify-icon>Visi & Misi</a></li>
+              <li><a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-neutral-600 hover:bg-desa-50 hover:text-desa-700"><iconify-icon icon="solar:flag-linear" width="16"></iconify-icon>Geomorfologi</a></li>
+            </ul>
+          </li>
+          <li class="dropdown relative">
+            <a href="#pemerintahan" class="menu-item flex items-center gap-1 px-5 py-3.5 text-neutral-600 hover:text-desa-700">Pemerintahan <iconify-icon icon="solar:alt-arrow-down-linear" width="14"></iconify-icon></a>
+            <ul class="dropdown-menu absolute top-full left-0 bg-white border border-neutral-100 rounded-lg shadow-lg py-2 min-w-[200px] animate-slide-down z-50">
+              <li><a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-neutral-600 hover:bg-desa-50 hover:text-desa-700"><iconify-icon icon="solar:user-bold" width="16"></iconify-icon>Perangkat Desa</a></li>
+              <li><a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-neutral-600 hover:bg-desa-50 hover:text-desa-700"><iconify-icon icon="solar:shield-check-linear" width="16"></iconify-icon>BPD</a></li>
+              <li><a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-neutral-600 hover:bg-desa-50 hover:text-desa-700"><iconify-icon icon="solar:people-nearby-linear" width="16"></iconify-icon>Lembaga Desa</a></li>
+            </ul>
+          </li>
+          <li><a href="#data" class="menu-item block px-5 py-3.5 text-neutral-600 hover:text-desa-700">Data Desa</a></li>
+          <li><a href="#layanan" class="menu-item block px-5 py-3.5 text-neutral-600 hover:text-desa-700">Layanan</a></li>
+          <li><a href="#galeri" class="menu-item block px-5 py-3.5 text-neutral-600 hover:text-desa-700">Galeri</a></li>
+          <li><a href="#berita" class="menu-item block px-5 py-3.5 text-neutral-600 hover:text-desa-700">Berita</a></li>
+          <li><a href="#kontak" class="menu-item block px-5 py-3.5 text-neutral-600 hover:text-desa-700">Kontak</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== MOBILE MENU ===== -->
+  <div id="mobileMenu" class="mobile-menu fixed inset-0 z-[999] bg-white overflow-y-auto lg:hidden">
+    <div class="p-6 flex items-center justify-between border-b border-neutral-100">
+      <span class="font-bold text-desa-800 text-lg">Menu</span>
+      <button id="closeMobileMenu" class="p-2 text-neutral-500 hover:text-neutral-800">
+        <iconify-icon icon="solar:close-circle-linear" width="24"></iconify-icon>
+      </button>
+    </div>
+    <nav class="p-6 space-y-1">
+      <a href="#beranda" class="block py-3 px-4 rounded-lg text-desa-700 font-semibold bg-desa-50">Beranda</a>
+      <a href="#profil" class="block py-3 px-4 rounded-lg text-neutral-600 font-medium hover:bg-neutral-50">Profil Desa</a>
+      <a href="#pemerintahan" class="block py-3 px-4 rounded-lg text-neutral-600 font-medium hover:bg-neutral-50">Pemerintahan</a>
+      <a href="#data" class="block py-3 px-4 rounded-lg text-neutral-600 font-medium hover:bg-neutral-50">Data Desa</a>
+      <a href="#layanan" class="block py-3 px-4 rounded-lg text-neutral-600 font-medium hover:bg-neutral-50">Layanan</a>
+      <a href="#galeri" class="block py-3 px-4 rounded-lg text-neutral-600 font-medium hover:bg-neutral-50">Galeri</a>
+      <a href="#berita" class="block py-3 px-4 rounded-lg text-neutral-600 font-medium hover:bg-neutral-50">Berita</a>
+      <a href="#kontak" class="block py-3 px-4 rounded-lg text-neutral-600 font-medium hover:bg-neutral-50">Kontak</a>
+    </nav>
+  </div>
+
+  <!-- ===== HERO SLIDER ===== -->
+  <section id="beranda" class="relative h-[500px] md:h-[600px] overflow-hidden">
+    <div id="heroSlider" class="absolute inset-0">
+      <div class="hero-slide absolute inset-0 opacity-100" data-slide="0">
+        <img src="https://picsum.photos/seed/desa-village1/1600/700.jpg" alt="Desa Padamukti" class="w-full h-full object-cover">
+      </div>
+      <div class="hero-slide absolute inset-0 opacity-0" data-slide="1">
+        <img src="https://picsum.photos/seed/desa-nature2/1600/700.jpg" alt="Alam Desa" class="w-full h-full object-cover">
+      </div>
+      <div class="hero-slide absolute inset-0 opacity-0" data-slide="2">
+        <img src="https://picsum.photos/seed/desa-community3/1600/700.jpg" alt="Masyarakat" class="w-full h-full object-cover">
+      </div>
+    </div>
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-r from-desa-950/80 via-desa-900/60 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-desa-950/50 to-transparent"></div>
+    <!-- Content -->
+    <div class="relative z-10 h-full max-w-screen-2xl mx-auto px-6 lg:px-10 flex items-center">
+      <div class="max-w-xl">
+        <span class="animate-fade-up inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gold-500/20 border border-gold-400/30 text-gold-400 text-xs font-bold uppercase tracking-widest mb-6">
+          <iconify-icon icon="solar:star-bold" width="12"></iconify-icon>
+          Selamat Datang
+        </span>
+        <h2 class="animate-fade-up delay-100 text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-[0.95] tracking-tight mb-4">
+          Desa<br><span class="text-gold-400">Padamukti</span>
+        </h2>
+        <p class="animate-fade-up delay-200 text-neutral-300 text-base md:text-lg leading-relaxed mb-8 max-w-md font-light">
+          Mewujudkan desa yang maju, mandiri, dan sejahtera melalui pelayanan publik yang transparan dan akuntabel.
+        </p>
+        <div class="animate-fade-up delay-300 flex flex-wrap gap-3">
+          <a href="#profil" class="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-lg text-white text-sm font-semibold">
+            Profil Desa <iconify-icon icon="solar:arrow-right-linear" width="16"></iconify-icon>
+          </a>
+          <a href="#layanan" class="btn-gold inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold">
+            Layanan Publik
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Slide Indicators -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2">
+      <button class="slide-dot w-8 h-1.5 rounded-full bg-white transition-all" data-index="0"></button>
+      <button class="slide-dot w-4 h-1.5 rounded-full bg-white/40 transition-all" data-index="1"></button>
+      <button class="slide-dot w-4 h-1.5 rounded-full bg-white/40 transition-all" data-index="2"></button>
+    </div>
+  </section>
+
+  <!-- ===== MARQUEE TICKER ===== -->
+  <div class="bg-desa-800 text-white py-2.5 overflow-hidden">
+    <div class="marquee-track whitespace-nowrap text-sm font-medium">
+      <span class="flex items-center gap-2"><iconify-icon icon="solar:bell-bold" width="14" class="text-gold-400"></iconify-icon> Pengumuman: Pendaftaran Program Bantuan Langsung Tunai Desa dibuka mulai 1 Januari 2025</span>
+      <span class="flex items-center gap-2"><iconify-icon icon="solar:calendar-bold" width="14" class="text-gold-400"></iconify-icon> Musyawarah Desa akan dilaksanakan pada tanggal 15 Januari 2025 di Balai Desa</span>
+      <span class="flex items-center gap-2"><iconify-icon icon="solar:info-circle-bold" width="14" class="text-gold-400"></iconify-icon> Update data KTP Elektronik dapat dilakukan di Kantor Desa setiap hari kerja</span>
+      <span class="flex items-center gap-2"><iconify-icon icon="solar:bell-bold" width="14" class="text-gold-400"></iconify-icon> Pengumuman: Pendaftaran Program Bantuan Langsung Tunai Desa dibuka mulai 1 Januari 2025</span>
+      <span class="flex items-center gap-2"><iconify-icon icon="solar:calendar-bold" width="14" class="text-gold-400"></iconify-icon> Musyawarah Desa akan dilaksanakan pada tanggal 15 Januari 2025 di Balai Desa</span>
+      <span class="flex items-center gap-2"><iconify-icon icon="solar:info-circle-bold" width="14" class="text-gold-400"></iconify-icon> Update data KTP Elektronik dapat dilakukan di Kantor Desa setiap hari kerja</span>
+    </div>
+  </div>
+
+  <!-- ===== SAMBUTAN KADES ===== -->
+  <section id="profil" class="py-16 md:py-24 bg-white">
+    <div class="max-w-screen-2xl mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <!-- Photo -->
+        <div class="observe-fade flex justify-center lg:justify-start">
+          <div class="relative">
+            <div class="w-72 h-96 md:w-80 md:h-[440px] rounded-2xl overflow-hidden shadow-2xl">
+              <img src="https://picsum.photos/seed/village-leader/400/550.jpg" alt="Kepala Desa" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute -bottom-4 -right-4 w-24 h-24 bg-desa-600 rounded-xl flex items-center justify-center text-white">
+              <div class="text-center">
+                <iconify-icon icon="solar:shield-check-bold" width="28" class="text-gold-400"></iconify-icon>
+                <p class="text-[9px] font-bold uppercase tracking-wider mt-1">Terpercaya</p>
+              </div>
+            </div>
+            <div class="absolute -top-3 -left-3 w-16 h-16 bg-gold-500 rounded-lg flex items-center justify-center">
+              <iconify-icon icon="solar:star-bold" width="24" class="text-desa-900"></iconify-icon>
+            </div>
+          </div>
+        </div>
+        <!-- Text -->
+        <div class="observe-fade" style="transition-delay: 200ms">
+          <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-desa-600 mb-4">
+            <span class="w-8 h-px bg-desa-500"></span> Sambutan Kepala Desa
+          </span>
+          <h3 class="text-3xl md:text-4xl font-bold text-desa-900 tracking-tight leading-tight mb-6">
+            Assalamu'alaikum,<br>Selamat Datang di<br>Website Resmi Desa Padamukti
+          </h3>
+          <div class="space-y-4 text-neutral-600 leading-relaxed">
+            <p>
+              Puji syukur kita panjatkan ke hadirat Tuhan Yang Maha Esa atas segala rahmat dan karunia-Nya. Dengan bangga kami persembahkan website resmi Desa Padamukti sebagai media informasi dan komunikasi antara pemerintah desa dengan masyarakat.
+            </p>
+            <p>
+              Kami berkomitmen untuk mewujudkan tata kelola pemerintahan desa yang transparan, akuntabel, dan partisipatif. Melalui website ini, masyarakat dapat mengakses informasi terkait program desa, data kependudukan, layanan administrasi, serta berbagai kegiatan yang berlangsung di desa kami.
+            </p>
+            <p class="font-medium text-desa-800 italic">
+              "Desa yang maju dimulai dari partisipasi aktif seluruh masyarakat."
+            </p>
+          </div>
+          <div class="mt-8 flex items-center gap-4">
+            <div>
+              <p class="font-bold text-desa-900 text-lg">H. Ahmad Sudrajat, S.Pd.</p>
+              <p class="text-sm text-neutral-500">Kepala Desa Padamukti</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATISTIK PENDUDUK ===== -->
+  <section id="data" class="py-16 md:py-20 bg-desa-900 relative overflow-hidden">
+    <!-- Pattern -->
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;1&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    <div class="relative z-10 max-w-screen-2xl mx-auto px-6 lg:px-10">
+      <div class="text-center mb-12 observe-fade">
+        <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-gold-400 mb-3">
+          <span class="w-8 h-px bg-gold-500"></span> Data Desa <span class="w-8 h-px bg-gold-500"></span>
+        </span>
+        <h3 class="text-3xl md:text-4xl font-bold text-white tracking-tight">Statistik Kependudukan</h3>
+        <p class="text-neutral-400 mt-3 max-w-lg mx-auto">Data kependudukan Desa Padamukti yang diperbarui secara berkala</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+        <div class="stat-card observe-fade text-center p-5 md:p-6 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all cursor-default" style="transition-delay: 0ms">
+          <div class="stat-icon w-12 h-12 mx-auto mb-3 rounded-lg bg-desa-600/30 flex items-center justify-center">
+            <iconify-icon icon="solar:users-group-rounded-bold" width="24" class="text-desa-300"></iconify-icon>
+          </div>
+          <p class="text-2xl md:text-3xl font-bold text-white counter" data-target="8452">0</p>
+          <p class="text-xs text-neutral-400 mt-1 uppercase tracking-wider font-medium">Penduduk</p>
+        </div>
+        <div class="stat-card observe-fade text-center p-5 md:p-6 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all cursor-default" style="transition-delay: 80ms">
+          <div class="stat-icon w-12 h-12 mx-auto mb-3 rounded-lg bg-desa-600/30 flex items-center justify-center">
+            <iconify-icon icon="solar:home-2-bold" width="24" class="text-desa-300"></iconify-icon>
+          </div>
+          <p class="text-2xl md:text-3xl font-bold text-white counter" data-target="2387">0</p>
+          <p class="text-xs text-neutral-400 mt-1 uppercase tracking-wider font-medium">Kepala Keluarga</p>
+        </div>
+        <div class="stat-card observe-fade text-center p-5 md:p-6 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all cursor-default" style="transition-delay: 160ms">
+          <div class="stat-icon w-12 h-12 mx-auto mb-3 rounded-lg bg-desa-600/30 flex items-center justify-center">
+            <iconify-icon icon="solar:men-bold" width="24" class="text-desa-300"></iconify-icon>
+          </div>
+          <p class="text-2xl md:text-3xl font-bold text-white counter" data-target="4301">0</p>
+          <p class="text-xs text-neutral-400 mt-1 uppercase tracking-wider font-medium">Laki-laki</p>
+        </div>
+        <div class="stat-card observe-fade text-center p-5 md:p-6 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all cursor-default" style="transition-delay: 240ms">
+          <div class="stat-icon w-12 h-12 mx-auto mb-3 rounded-lg bg-desa-600/30 flex items-center justify-center">
+            <iconify-icon icon="solar:women-bold" width="24" class="text-desa-300"></iconify-icon>
+          </div>
+          <p class="text-2xl md:text-3xl font-bold text-white counter" data-target="4151">0</p>
+          <p class="text-xs text-neutral-400 mt-1 uppercase tracking-wider font-medium">Perempuan</p>
+        </div>
+        <div class="stat-card observe-fade text-center p-5 md:p-6 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all cursor-default" style="transition-delay: 320ms">
+          <div class="stat-icon w-12 h-12 mx-auto mb-3 rounded-lg bg-desa-600/30 flex items-center justify-center">
+            <iconify-icon icon="solar:map-point-bold" width="24" class="text-desa-300"></iconify-icon>
+          </div>
+          <p class="text-2xl md:text-3xl font-bold text-white counter" data-target="6">0</p>
+          <p class="text-xs text-neutral-400 mt-1 uppercase tracking-wider font-medium">Dusun</p>
+        </div>
+        <div class="stat-card observe-fade text-center p-5 md:p-6 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all cursor-default" style="transition-delay: 400ms">
+          <div class="stat-icon w-12 h-12 mx-auto mb-3 rounded-lg bg-desa-600/30 flex items-center justify-center">
+            <iconify-icon icon="solar:buildings-bold" width="24" class="text-desa-300"></iconify-icon>
+          </div>
+          <p class="text-2xl md:text-3xl font-bold text-white counter" data-target="18">0</p>
+          <p class="text-xs text-neutral-400 mt-1 uppercase tracking-wider font-medium">RT/RW</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BERITA DESA ===== -->
+  <section id="berita" class="py-16 md:py-24 bg-neutral-50">
+    <div class="max-w-screen-2xl mx-auto px-6 lg:px-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4 observe-fade">
+        <div>
+          <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-desa-600 mb-3">
+            <span class="w-8 h-px bg-desa-500"></span> Informasi Terbaru
+          </span>
+          <h3 class="text-3xl md:text-4xl font-bold text-desa-900 tracking-tight">Berita Desa</h3>
+        </div>
+        <a href="#" class="inline-flex items-center gap-2 text-sm font-semibold text-desa-600 hover:text-desa-800 transition-colors">
+          Lihat Semua Berita <iconify-icon icon="solar:arrow-right-linear" width="16"></iconify-icon>
+        </a>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <!-- Card 1 -->
+        <article class="news-card observe-fade bg-white rounded-xl overflow-hidden border border-neutral-100" style="transition-delay: 0ms">
+          <div class="relative aspect-[16/10] overflow-hidden">
+            <img src="https://picsum.photos/seed/desa-news1/600/380.jpg" alt="Berita" class="w-full h-full object-cover">
+            <div class="absolute top-3 left-3">
+              <span class="px-3 py-1 rounded-full bg-desa-600 text-white text-[10px] font-bold uppercase tracking-wider">Pembangunan</span>
+            </div>
+          </div>
+          <div class="p-5 md:p-6">
+            <div class="flex items-center gap-3 text-xs text-neutral-400 mb-3">
+              <span class="flex items-center gap-1"><iconify-icon icon="solar:calendar-linear" width="13"></iconify-icon> 12 Jan 2025</span>
+              <span class="flex items-center gap-1"><iconify-icon icon="solar:eye-linear" width="13"></iconify-icon> 234</span>
+            </div>
+            <h4 class="font-bold text-desa-900 text-lg leading-snug mb-2 line-clamp-2 hover:text-desa-600 transition-colors cursor-pointer">Pembangunan Jalan Desa Tahap III Rampung, Warga Apresiasi Kinerja Pemdes</h4>
+            <p class="text-sm text-neutral-500 leading-relaxed line-clamp-3">Pembangunan jalan desa tahap III yang menghubungkan Dusun Sukamaju dengan Dusun Mekarjaya telah rampung dikerjakan oleh tim pelaksana kegiatan...</p>
+            <a href="#" class="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-desa-600 hover:text-desa-800 transition-colors">
+              Baca Selengkapnya <iconify-icon icon="solar:arrow-right-linear" width="14"></iconify-icon>
+            </a>
+          </div>
+        </article>
+        <!-- Card 2 -->
+        <article class="news-card observe-fade bg-white rounded-xl overflow-hidden border border-neutral-100" style="transition-delay: 150ms">
+          <div class="relative aspect-[16/10] overflow-hidden">
+            <img src="https://picsum.photos/seed/desa-news2/600/380.jpg" alt="Berita" class="w-full h-full object-cover">
+            <div class="absolute top-3 left-3">
+              <span class="px-3 py-1 rounded-full bg-gold-500 text-desa-900 text-[10px] font-bold uppercase tracking-wider">Kegiatan</span>
+            </div>
+          </div>
+          <div class="p-5 md:p-6">
+            <div class="flex items-center gap-3 text-xs text-neutral-400 mb-3">
+              <span class="flex items-center gap-1"><iconify-icon icon="solar:calendar-linear" width="13"></iconify-icon> 08 Jan 2025</span>
+              <span class="flex items-center gap-1"><iconify-icon icon="solar:eye-linear" width="13"></iconify-icon> 187</span>
+            </div>
+            <h4 class="font-bold text-desa-900 text-lg leading-snug mb-2 line-clamp-2 hover:text-desa-600 transition-colors cursor-pointer">Posyandu Rutin Bulan Januaru: Fokus Pemantauan Tumbuh Kembang Anak</h4>
+            <p class="text-sm text-neutral-500 leading-relaxed line-clamp-3">Kegiatan Posyandu rutin bulan Januari dilaksanakan di setiap dusun dengan fokus utama pada pemantauan tumbuh kembang anak balita...</p>
+            <a href="#" class="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-desa-600 hover:text-desa-800 transition-colors">
+              Baca Selengkapnya <iconify-icon icon="solar:arrow-right-linear" width="14"></iconify-icon>
+            </a>
+          </div>
+        </article>
+        <!-- Card 3 -->
+        <article class="news-card observe-fade bg-white rounded-xl overflow-hidden border border-neutral-100" style="transition-delay: 300ms">
+          <div class="relative aspect-[16/10] overflow-hidden">
+            <img src="https://picsum.photos/seed/desa-news3/600/380.jpg" alt="Berita" class="w-full h-full object-cover">
+            <div class="absolute top-3 left-3">
+              <span class="px-3 py-1 rounded-full bg-blue-600 text-white text-[10px] font-bold uppercase tracking-wider">Bantuan</span>
+            </div>
+          </div>
+          <div class="p-5 md:p-6">
+            <div class="flex items-center gap-3 text-xs text-neutral-400 mb-3">
+              <span class="flex items-center gap-1"><iconify-icon icon="solar:calendar-linear" width="13"></iconify-icon> 05 Jan 2025</span>
+              <span class="flex items-center gap-1"><iconify-icon icon="solar:eye-linear" width="13"></iconify-icon> 412</span>
+            </div>
+            <h4 class="font-bold text-desa-900 text-lg leading-snug mb-2 line-clamp-2 hover:text-desa-600 transition-colors cursor-pointer">Penyaluran BLT Dana Desa Tahap I Tahun 2025 Tepat Sasaran</h4>
+            <p class="text-sm text-neutral-500 leading-relaxed line-clamp-3">Pemerintah Desa Padamukti telah menyalurkan Bantuan Langsung Tunai (BLT) Dana Desa tahap I tahun 2025 kepada 245 Keluarga Penerima Manfaat...</p>
+            <a href="#" class="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-desa-600 hover:text-desa-800 transition-colors">
+              Baca Selengkapnya <iconify-icon icon="solar:arrow-right-linear" width="14"></iconify-icon>
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PENGUMUMAN + AGENDA ===== -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="max-w-screen-2xl mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-2 gap-8 lg:gap-12">
+        <!-- Pengumuman -->
+        <div class="observe-fade">
+          <div class="flex items-center gap-3 mb-8">
+            <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
+              <iconify-icon icon="solar:bell-bing-bold" width="20" class="text-red-500"></iconify-icon>
+            </div>
+            <h3 class="text-2xl font-bold text-desa-900 tracking-tight">Pengumuman</h3>
+          </div>
+          <div class="space-y-4">
+            <a href="#" class="group flex gap-4 p-4 rounded-xl border border-neutral-100 hover:border-desa-200 hover:bg-desa-50/50 transition-all">
+              <div class="flex-shrink-0 w-14 h-14 rounded-lg bg-desa-600 text-white flex flex-col items-center justify-center">
+                <span class="text-lg font-bold leading-none">12</span>
+                <span class="text-[9px] uppercase tracking-wider font-medium">Jan</span>
+              </div>
+              <div class="min-w-0">
+                <h4 class="font-semibold text-desa-900 text-sm leading-snug group-hover:text-desa-600 transition-colors line-clamp-2">Pendaftaran Program Ketahanan Pangan Desa Tahun 2025</h4>
+                <p class="text-xs text-neutral-400 mt-1">Dibuka hingga 31 Januari 2025</p>
+              </div>
+            </a>
+            <a href="#" class="group flex gap-4 p-4 rounded-xl border border-neutral-100 hover:border-desa-200 hover:bg-desa-50/50 transition-all">
+              <div class="flex-shrink-0 w-14 h-14 rounded-lg bg-gold-500 text-desa-900 flex flex-col items-center justify-center">
+                <span class="text-lg font-bold leading-none">08</span>
+                <span class="text-[9px] uppercase tracking-wider font-medium">Jan</span>
+              </div>
+              <div class="min-w-0">
+                <h4 class="font-semibold text-desa-900 text-sm leading-snug group-hover:text-desa-600 transition-colors line-clamp-2">Jadwal Pelayanan KTP Elektronik Keliling Bulan Januari</h4>
+                <p class="text-xs text-neutral-400 mt-1">Layanan di setiap dusun</p>
+              </div>
+            </a>
+            <a href="#" class="group flex gap-4 p-4 rounded-xl border border-neutral-100 hover:border-desa-200 hover:bg-desa-50/50 transition-all">
+              <div class="flex-shrink-0 w-14 h-14 rounded-lg bg-blue-600 text-white flex flex-col items-center justify-center">
+                <span class="text-lg font-bold leading-none">03</span>
+                <span class="text-[9px] uppercase tracking-wider font-medium">Jan</span>
+              </div>
+              <div class="min-w-0">
+                <h4 class="font-semibold text-desa-900 text-sm leading-snug group-hover:text-desa-600 transition-colors line-clamp-2">Hasil Musdes penetapan RPJMDes Padamukti 2025-2029</h4>
+                <p class="text-xs text-neutral-400 mt-1">Dokumen dapat diunduh di kantor desa</p>
+              </div>
+            </a>
+            <a href="#" class="group flex gap-4 p-4 rounded-xl border border-neutral-100 hover:border-desa-200 hover:bg-desa-50/50 transition-all">
+              <div class="flex-shrink-0 w-14 h-14 rounded-lg bg-neutral-700 text-white flex flex-col items-center justify-center">
+                <span class="text-lg font-bold leading-none">28</span>
+                <span class="text-[9px] uppercase tracking-wider font-medium">Des</span>
+              </div>
+              <div class="min-w-0">
+                <h4 class="font-semibold text-desa-900 text-sm leading-snug group-hover:text-desa-600 transition-colors line-clamp-2">Libur Natal & Tahun Baru, Pelayanan Tutup 25-26 Des & 1 Jan</h4>
+                <p class="text-xs text-neutral-400 mt-1">Pelayanan normal kembali 2 Januari</p>
+              </div>
+            </a>
+          </div>
+        </div>
+        <!-- Agenda Desa -->
+        <div class="observe-fade" style="transition-delay: 200ms">
+          <div class="flex items-center gap-3 mb-8">
+            <div class="w-10 h-10 rounded-lg bg-desa-50 flex items-center justify-center">
+              <iconify-icon icon="solar:calendar-bold" width="20" class="text-desa-600"></iconify-icon>
+            </div>
+            <h3 class="text-2xl font-bold text-desa-900 tracking-tight">Agenda Desa</h3>
+          </div>
+          <div class="space-y-4">
+            <div class="relative pl-8 pb-6 border-l-2 border-desa-200 last:border-l-0">
+              <div class="absolute left-[-7px] top-0 w-3 h-3 rounded-full bg-desa-600 ring-4 ring-desa-100"></div>
+              <div class="p-4 rounded-xl bg-desa-50/50 border border-desa-100">
+                <p class="text-xs font-bold text-desa-600 uppercase tracking-wider">15 Januari 2025</p>
+                <h4 class="font-semibold text-desa-900 text-sm mt-1">Musyawarah Desa (Musdes) Penetapan RKPDes 2025</h4>
+                <p class="text-xs text-neutral-500 mt-1 flex items-center gap-1"><iconify-icon icon="solar:map-point-linear" width="12"></iconify-icon> Aula Balai Desa, 08.00 WIB</p>
+              </div>
+            </div>
+            <div class="relative pl-8 pb-6 border-l-2 border-desa-200">
+              <div class="absolute left-[-7px] top-0 w-3 h-3 rounded-full bg-gold-500 ring-4 ring-gold-100"></div>
+              <div class="p-4 rounded-xl bg-neutral-50 border border-neutral-100">
+                <p class="text-xs font-bold text-gold-600 uppercase tracking-wider">20 Januari 2025</p>
+                <h4 class="font-semibold text-desa-900 text-sm mt-1">Kerja Bakti Bersih Desa & Penghijauan</h4>
+                <p class="text-xs text-neutral-500 mt-1 flex items-center gap-1"><iconify-icon icon="solar:map-point-linear" width="12"></iconify-icon> Sepanjang Jalan Utama Desa, 06.00 WIB</p>
+              </div>
+            </div>
+            <div class="relative pl-8 pb-6 border-l-2 border-desa-200">
+              <div class="absolute left-[-7px] top-0 w-3 h-3 rounded-full bg-blue-500 ring-4 ring-blue-100"></div>
+              <div class="p-4 rounded-xl bg-neutral-50 border border-neutral-100">
+                <p class="text-xs font-bold text-blue-600 uppercase tracking-wider">25 Januari 2025</p>
+                <h4 class="font-semibold text-desa-900 text-sm mt-1">Pelatihan UMKM Digital Marketing</h4>
+                <p class="text-xs text-neutral-500 mt-1 flex items-center gap-1"><iconify-icon icon="solar:map-point-linear" width="12"></iconify-icon> Aula Desa, 09.00 WIB</p>
+              </div>
+            </div>
+            <div class="relative pl-8 border-l-2 border-transparent">
+              <div class="absolute left-[-7px] top-0 w-3 h-3 rounded-full bg-neutral-300 ring-4 ring-neutral-100"></div>
+              <div class="p-4 rounded-xl bg-neutral-50 border border-neutral-100">
+                <p class="text-xs font-bold text-neutral-500 uppercase tracking-wider">01 Februari 2025</p>
+                <h4 class="font-semibold text-desa-900 text-sm mt-1">Rapat Koordinasi Bulanan Perangkat Desa</h4>
+                <p class="text-xs text-neutral-500 mt-1 flex items-center gap-1"><iconify-icon icon="solar:map-point-linear" width="12"></iconify-icon> Ruang Rapat Desa, 08.00 WIB</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LAYANAN DESA ===== -->
+  <section id="layanan" class="py-16 md:py-24 bg-neutral-50">
+    <div class="max-w-screen-2xl mx-auto px-6 lg:px-10">
+      <div class="text-center mb-12 observe-fade">
+        <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-desa-600 mb-3">
+          <span class="w-8 h-px bg-desa-500"></span> Layanan Kami <span class="w-8 h-px bg-desa-500"></span>
+        </span>
+        <h3 class="text-3xl md:text-4xl font-bold text-desa-900 tracking-tight">Layanan Publik Desa</h3>
+        <p class="text-neutral-500 mt-3 max-w-lg mx-auto">Berbagai layanan administrasi yang dapat diakses oleh masyarakat Desa Padamukti</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="service-card observe-fade bg-white rounded-xl p-6 border border-neutral-100 text-center cursor-pointer" style="transition-delay: 0ms">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-desa-50 flex items-center justify-center">
+            <iconify-icon icon="solar:card-2-bold-duotone" width="32" class="text-desa-600"></iconify-icon>
+          </div>
+          <h4 class="font-bold text-desa-900 mb-2">Surat Keterangan</h4>
+          <p class="text-sm text-neutral-500 leading-relaxed">SKCK, SKTM, SK Domisili, SK Usaha, dan surat keterangan lainnya</p>
+        </div>
+        <div class="service-card observe-fade bg-white rounded-xl p-6 border border-neutral-100 text-center cursor-pointer" style="transition-delay: 100ms">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-blue-50 flex items-center justify-center">
+            <iconify-icon icon="solar:document-add-bold-duotone" width="32" class="text-blue-600"></iconify-icon>
+          </div>
+          <h4 class="font-bold text-desa-900 mb-2">Surat Pengantar</h4>
+          <p class="text-sm text-neutral-500 leading-relaxed">Pengantar KTP, KK, Akta Kelahiran, dan dokumen kependudukan</p>
+        </div>
+        <div class="service-card observe-fade bg-white rounded-xl p-6 border border-neutral-100 text-center cursor-pointer" style="transition-delay: 200ms">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gold-400/10 flex items-center justify-center">
+            <iconify-icon icon="solar:hand-money-bold-duotone" width="32" class="text-gold-600"></iconify-icon>
+          </div>
+          <h4 class="font-bold text-desa-900 mb-2">Perizinan</h4>
+          <p class="text-sm text-neutral-500 leading-relaxed">Izin usaha mikro, izin keramaian, dan perizinan desa lainnya</p>
+        </div>
+        <div class="service-card observe-fade bg-white rounded-xl p-6 border border-neutral-100 text-center cursor-pointer" style="transition-delay: 300ms">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-50 flex items-center justify-center">
+            <iconify-icon icon="solar:chat-round-dots-bold-duotone" width="32" class="text-red-500"></iconify-icon>
+          </div>
+          <h4 class="font-bold text-desa-900 mb-2">Pengaduan</h4>
+          <p class="text-sm text-neutral-500 leading-relaxed">Sampaikan aspirasi dan pengaduan masyarakat secara online</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GALERI ===== -->
+  <section id="galeri" class="py-16 md:py-24 bg-white">
+    <div class="max-w-screen-2xl mx-auto px-6 lg:px-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4 observe-fade">
+        <div>
+          <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-desa-600 mb-3">
+            <span class="w-8 h-px bg-desa-500"></span> Dokumentasi
+          </span>
+          <h3 class="text-3xl md:text-4xl font-bold text-desa-900 tracking-tight">Galeri Desa</h3>
+        </div>
+        <a href="#" class="inline-flex items-center gap-2 text-sm font-semibold text-desa-600 hover:text-desa-800 transition-colors">
+          Lihat Semua Foto <iconify-icon icon="solar:arrow-right-linear" width="16"></iconify-icon>
+        </a>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+        <div class="gallery-item observe-fade rounded-xl overflow-hidden relative aspect-square cursor-pointer" style="transition-delay: 0ms">
+          <img src="https://picsum.photos/seed/galeri-desa1/500/500.jpg" alt="Galeri" class="w-full h-full object-cover">
+          <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-desa-950/80 to-transparent opacity-0 flex items-end p-4">
+            <p class="text-white text-sm font-semibold">Pembangunan Jalan Desa</p>
+          </div>
+        </div>
+        <div class="gallery-item observe-fade rounded-xl overflow-hidden relative aspect-square cursor-pointer md:row-span-2 md:aspect-auto" style="transition-delay: 80ms">
+          <img src="https://picsum.photos/seed/galeri-desa2/500/1000.jpg" alt="Galeri" class="w-full h-full object-cover">
+          <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-desa-950/80 to-transparent opacity-0 flex items-end p-4">
+            <p class="text-white text-sm font-semibold">Upacara HUT RI</p>
+          </div>
+        </div>
+        <div class="gallery-item observe-fade rounded-xl overflow-hidden relative aspect-square cursor-pointer" style="transition-delay: 160ms">
+          <img src="https://picsum.photos/seed/galeri-desa3/500/500.jpg" alt="Galeri" class="w-full h-full object-cover">
+          <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-desa-950/80 to-transparent opacity-0 flex items-end p-4">
+            <p class="text-white text-sm font-semibold">Posyandu Balita</p>
+          </div>
+        </div>
+        <div class="gallery-item observe-fade rounded-xl overflow-hidden relative aspect-square cursor-pointer" style="transition-delay: 240ms">
+          <img src="https://picsum.photos/seed/galeri-desa4/500/500.jpg" alt="Galeri" class="w-full h-full object-cover">
+          <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-desa-950/80 to-transparent opacity-0 flex items-end p-4">
+            <p class="text-white text-sm font-semibold">Pelatihan UMKM</p>
+          </div>
+        </div>
+        <div class="gallery-item observe-fade rounded-xl overflow-hidden relative aspect-square cursor-pointer" style="transition-delay: 320ms">
+          <img src="https://picsum.photos/seed/galeri-desa5/500/500.jpg" alt="Galeri" class="w-full h-full object-cover">
+          <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-desa-950/80 to-transparent opacity-0 flex items-end p-4">
+            <p class="text-white text-sm font-semibold">Gotong Royong</p>
+          </div>
+        </div>
+        <div class="gallery-item observe-fade rounded-xl overflow-hidden relative aspect-square cursor-pointer" style="transition-delay: 400ms">
+          <img src="https://picsum.photos/seed/galeri-desa6/500/500.jpg" alt="Galeri" class="w-full h-full object-cover">
+          <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-desa-950/80 to-transparent opacity-0 flex items-end p-4">
+            <p class="text-white text-sm font-semibold">Penghijauan Desa</p>
+          </div>
+        </div>
+        <div class="gallery-item observe-fade rounded-xl overflow-hidden relative aspect-square cursor-pointer" style="transition-delay: 480ms">
+          <img src="https://picsum.photos/seed/galeri-desa7/500/500.jpg" alt="Galeri" class="w-full h-full object-cover">
+          <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-desa-950/80 to-transparent opacity-0 flex items-end p-4">
+            <p class="text-white text-sm font-semibold">Vaksinasi Gratis</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PERANGKAT DESA ===== -->
+  <section id="pemerintahan" class="py-16 md:py-24 bg-desa-50">
+    <div class="max-w-screen-2xl mx-auto px-6 lg:px-10">
+      <div class="text-center mb-12 observe-fade">
+        <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-desa-600 mb-3">
+          <span class="w-8 h-px bg-desa-500"></span> Aparatur Desa <span class="w-8 h-px bg-desa-500"></span>
+        </span>
+        <h3 class="text-3xl md:text-4xl font-bold text-desa-900 tracking-tight">Perangkat Desa Padamukti</h3>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
+        <div class="observe-fade text-center group" style="transition-delay: 0ms">
+          <div class="relative w-28 h-28 md:w-32 md:h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-white shadow-lg group-hover:border-desa-400 transition-all">
+            <img src="https://picsum.photos/seed/person-kades/300/300.jpg" alt="Kepala Desa" class="w-full h-full object-cover">
+          </div>
+          <h4 class="font-bold text-desa-900 text-sm">H. Ahmad Sudrajat, S.Pd.</h4>
+          <p class="text-xs text-desa-600 font-semibold mt-0.5">Kepala Desa</p>
+        </div>
+        <div class="observe-fade text-center group" style="transition-delay: 80ms">
+          <div class="relative w-28 h-28 md:w-32 md:h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-white shadow-lg group-hover:border-desa-400 transition-all">
+            <img src="https://picsum.photos/seed/person-sekdes/300/300.jpg" alt="Sekretaris" class="w-full h-full object-cover">
+          </div>
+          <h4 class="font-bold text-desa-900 text-sm">Ujang Suryana, S.Sos.</h4>
+          <p class="text-xs text-desa-600 font-semibold mt-0.5">Sekretaris Desa</p>
+        </div>
+        <div class="observe-fade text-center group" style="transition-delay: 160ms">
+          <div class="relative w-28 h-28 md:w-32 md:h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-white shadow-lg group-hover:border-desa-400 transition-all">
+            <img src="https://picsum.photos/seed/person-kaur1/300/300.jpg" alt="Kaur Keuangan" class="w-full h-full object-cover">
+          </div>
+          <h4 class="font-bold text-desa-900 text-sm">Eneng Sumiati</h4>
+          <p class="text-xs text-desa-600 font-semibold mt-0.5">Kaur Keuangan</p>
+        </div>
+        <div class="observe-fade text-center group" style="transition-delay: 240ms">
+          <div class="relative w-28 h-28 md:w-32 md:h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-white shadow-lg group-hover:border-desa-400 transition-all">
+            <img src="https://picsum.photos/seed/person-kaur2/300/300.jpg" alt="Kaur Tata Usaha" class="w-full h-full object-cover">
+          </div>
+          <h4 class="font-bold text-desa-900 text-sm">Dedi Mulyadi</h4>
+          <p class="text-xs text-desa-600 font-semibold mt-0.5">Kaur TU & Umum</p>
+        </div>
+        <div class="observe-fade text-center group" style="transition-delay: 320ms">
+          <div class="relative w-28 h-28 md:w-32 md:h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-white shadow-lg group-hover:border-desa-400 transition-all">
+            <img src="https://picsum.photos/seed/person-kasi1/300/300.jpg" alt="Kasi Pelayanan" class="w-full h-full object-cover">
+          </div>
+          <h4 class="font-bold text-desa-900 text-sm">Rina Wulandari</h4>
+          <p class="text-xs text-desa-600 font-semibold mt-0.5">Kasi Pelayanan</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PETA DESA (CTA) ===== -->
+  <section class="relative py-20 md:py-28 overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="https://picsum.photos/seed/desa-aerial-map/1600/600.jpg" alt="Peta Desa" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-desa-950/85"></div>
+    </div>
+    <div class="relative z-10 max-w-screen-2xl mx-auto px-6 lg:px-10 text-center">
+      <div class="observe-fade">
+        <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-gold-400 mb-4">
+          <iconify-icon icon="solar:map-point-bold" width="14"></iconify-icon> Lokasi Kami
+        </span>
+        <h3 class="text-3xl md:text-5xl font-bold text-white tracking-tight mb-4">Peta & Wilayah Desa</h3>
+        <p class="text-neutral-300 max-w-xl mx-auto mb-8 leading-relaxed">
+          Desa Padamukti terletak di Kecamatan Pasawahan, Kabupaten Purwakarta, Jawa Barat. Luas wilayah desa mencapai 450 hektar dengan topografi dataran rendah hingga perbukitan.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="#" class="btn-primary inline-flex items-center gap-2 px-8 py-3.5 rounded-lg text-white text-sm font-semibold">
+            <iconify-icon icon="solar:map-bold" width="18"></iconify-icon> Lihat Peta Interaktif
+          </a>
+          <a href="#kontak" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg border border-white/20 text-white text-sm font-semibold hover:bg-white/10 transition-all">
+            <iconify-icon icon="solar:phone-calling-bold" width="18"></iconify-icon> Hubungi Kami
+          </a>
+        </div>
+      </div>
+      <!-- Mini Stats -->
+      <div class="mt-14 grid grid-cols-3 gap-6 max-w-lg mx-auto">
+        <div class="observe-fade text-center" style="transition-delay: 100ms">
+          <p class="text-2xl md:text-3xl font-bold text-gold-400">450</p>
+          <p class="text-xs text-neutral-400 mt-1 uppercase tracking-wider">Hektar</p>
+        </div>
+        <div class="observe-fade text-center" style="transition-delay: 200ms">
+          <p class="text-2xl md:text-3xl font-bold text-gold-400">6</p>
+          <p class="text-xs text-neutral-400 mt-1 uppercase tracking-wider">Dusun</p>
+        </div>
+        <div class="observe-fade text-center" style="transition-delay: 300ms">
+          <p class="text-2xl md:text-3xl font-bold text-gold-400">18</p>
+          <p class="text-xs text-neutral-400 mt-1 uppercase tracking-wider">RT/RW</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== KONTAK ===== -->
+  <section id="kontak" class="py-16 md:py-24 bg-white">
+    <div class="max-w-screen-2xl mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-5 gap-10 lg:gap-16">
+        <!-- Info -->
+        <div class="lg:col-span-2 observe-fade">
+          <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-desa-600 mb-3">
+            <span class="w-8 h-px bg-desa-500"></span> Kontak
+          </span>
+          <h3 class="text-3xl md:text-4xl font-bold text-desa-900 tracking-tight mb-6">Hubungi Kami</h3>
+          <p class="text-neutral-500 leading-relaxed mb-8">Jangan ragu untuk menghubungi kami jika membutuhkan informasi atau layanan dari Pemerintah Desa Padamukti.</p>
+          <div class="space-y-5">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-desa-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <iconify-icon icon="solar:map-point-bold" width="18" class="text-desa-600"></iconify-icon>
+              </div>
+              <div>
+                <p class="font-semibold text-desa-900 text-sm">Alamat</p>
+                <p class="text-sm text-neutral-500 mt-0.5">Kantor Desa Padamukti, Jl. Raya Pasawahan No. 123, Kec. Pasawahan, Kab. Purwakarta, Jawa Barat 41181</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-desa-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <iconify-icon icon="solar:phone-bold" width="18" class="text-desa-600"></iconify-icon>
+              </div>
+              <div>
+                <p class="font-semibold text-desa-900 text-sm">Telepon</p>
+                <p class="text-sm text-neutral-500 mt-0.5">(021) 8765-4321</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-desa-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <iconify-icon icon="solar:letter-bold" width="18" class="text-desa-600"></iconify-icon>
+              </div>
+              <div>
+                <p class="font-semibold text-desa-900 text-sm">Email</p>
+                <p class="text-sm text-neutral-500 mt-0.5">desa@padamukti.desa.id</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-desa-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <iconify-icon icon="solar:clock-circle-bold" width="18" class="text-desa-600"></iconify-icon>
+              </div>
+              <div>
+                <p class="font-semibold text-desa-900 text-sm">Jam Pelayanan</p>
+                <p class="text-sm text-neutral-500 mt-0.5">Senin - Jumat: 08.00 - 15.00 WIB</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Form -->
+        <div class="lg:col-span-3 observe-fade" style="transition-delay: 200ms">
+          <form id="contactForm" class="bg-neutral-50 rounded-2xl p-6 md:p-8 border border-neutral-100">
+            <h4 class="font-bold text-desa-900 text-lg mb-6">Kirim Pesan</h4>
+            <div class="grid sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label class="block text-xs font-semibold text-neutral-700 uppercase tracking-wider mb-1.5">Nama Lengkap</label>
+                <input type="text" required class="w-full px-4 py-2.5 text-sm border border-neutral-200 rounded-lg bg-white focus:outline-none focus:border-desa-500 focus:ring-2 focus:ring-desa-100 transition-all" placeholder="Masukkan nama">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-neutral-700 uppercase tracking-wider mb-1.5">No. HP / WhatsApp</label>
+                <input type="tel" required class="w-full px-4 py-2.5 text-sm border border-neutral-200 rounded-lg bg-white focus:outline-none focus:border-desa-500 focus:ring-2 focus:ring-desa-100 transition-all" placeholder="08xxxxxxxxxx">
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="block text-xs font-semibold text-neutral-700 uppercase tracking-wider mb-1.5">Email</label>
+              <input type="email" class="w-full px-4 py-2.5 text-sm border border-neutral-200 rounded-lg bg-white focus:outline-none focus:border-desa-500 focus:ring-2 focus:ring-desa-100 transition-all" placeholder="email@contoh.com">
+            </div>
+            <div class="mb-4">
+              <label class="block text-xs font-semibold text-neutral-700 uppercase tracking-wider mb-1.5">Kategori</label>
+              <select class="w-full px-4 py-2.5 text-sm border border-neutral-200 rounded-lg bg-white focus:outline-none focus:border-desa-500 focus:ring-2 focus:ring-desa-100 transition-all text-neutral-600">
+                <option>Pilih kategori pesan</option>
+                <option>Informasi Umum</option>
+                <option>Pengaduan</option>
+                <option>Saran & Masukan</option>
+                <option>Permohonan Layanan</option>
+              </select>
+            </div>
+            <div class="mb-6">
+              <label class="block text-xs font-semibold text-neutral-700 uppercase tracking-wider mb-1.5">Pesan</label>
+              <textarea rows="4" required class="w-full px-4 py-2.5 text-sm border border-neutral-200 rounded-lg bg-white focus:outline-none focus:border-desa-500 focus:ring-2 focus:ring-desa-100 transition-all resize-none" placeholder="Tulis pesan Anda..."></textarea>
+            </div>
+            <button type="submit" class="btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-lg text-white text-sm font-semibold">
+              <iconify-icon icon="solar:plain-bold" width="16"></iconify-icon> Kirim Pesan
+            </button>
+            <!-- Success Toast -->
+            <div id="formToast" class="hidden mt-4 p-3 rounded-lg bg-desa-50 border border-desa-200 text-desa-700 text-sm font-medium flex items-center gap-2">
+              <iconify-icon icon="solar:check-circle-bold" width="18" class="text-desa-600"></iconify-icon>
+              Pesan Anda berhasil terkirim! Kami akan segera merespons.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="bg-navy-900 text-white">
+    <div class="max-w-screen-2xl mx-auto px-6 lg:px-10 py-14">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+        <!-- Col 1 -->
+        <div class="lg:col-span-1">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-11 h-11 rounded-full border-2 border-desa-500 flex items-center justify-center">
+              <iconify-icon icon="solar:buildings-bold" width="20" class="text-desa-400"></iconify-icon>
+            </div>
+            <div>
+              <p class="font-bold text-sm text-white leading-tight">Desa Padamukti</p>
+              <p class="text-[10px] text-neutral-500 tracking-wider uppercase">Kab. Purwakarta</p>
+            </div>
+          </div>
+          <p class="text-sm text-neutral-400 leading-relaxed mb-5">
+            Website resmi Pemerintah Desa Padamukti, Kecamatan Pasawahan, Kabupaten Purwakarta, Jawa Barat.
+          </p>
+          <div class="flex items-center gap-3">
+            <a href="#" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-desa-600 hover:border-desa-600 transition-all">
+              <iconify-icon icon="mdi:facebook" width="16"></iconify-icon>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-desa-600 hover:border-desa-600 transition-all">
+              <iconify-icon icon="mdi:instagram" width="16"></iconify-icon>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-desa-600 hover:border-desa-600 transition-all">
+              <iconify-icon icon="mdi:youtube" width="16"></iconify-icon>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-desa-600 hover:border-desa-600 transition-all">
+              <iconify-icon icon="mdi:twitter" width="16"></iconify-icon>
+            </a>
+          </div>
+        </div>
+        <!-- Col 2 -->
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-wider mb-5 text-white">Tautan Cepat</h4>
+          <ul class="space-y-2.5">
+            <li><a href="#" class="text-sm text-neutral-400 hover:text-desa-300 transition-colors flex items-center gap-2"><iconify-icon icon="solar:alt-arrow-right-linear" width="14"></iconify-icon>Beranda</a></li>
+            <li><a href="#" class="text-sm text-neutral-400 hover:text-desa-300 transition-colors flex items-center gap-2"><iconify-icon icon="solar:alt-arrow-right-linear" width="14"></iconify-icon>Profil Desa</a></li>
+            <li><a href="#" class="text-sm text-neutral-400 hover:text-desa-300 transition-colors flex items-center gap-2"><iconify-icon icon="solar:alt-arrow-right-linear" width="14"></iconify-icon>Pemerintahan</a></li>
+            <li><a href="#" class="text-sm text-neutral-400 hover:text-desa-300 transition-colors flex items-center gap-2"><iconify-icon icon="solar:alt-arrow-right-linear" width="14"></iconify-icon>Data Desa</a></li>
+            <li><a href="#" class="text-sm text-neutral-400 hover:text-desa-300 transition-colors flex items-center gap-2"><iconify-icon icon="solar:alt-arrow-right-linear" width="14"></iconify-icon>Layanan Publik</a></li>
+            <li><a href="#" class="text-sm text-neutral-400 hover:text-desa-300 transition-colors flex items-center gap-2"><iconify-icon icon="solar:alt-arrow-right-linear" width="14"></iconify-icon>Galeri</a></li>
+          </ul>
+        </div>
+        <!-- Col 3 -->
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-wider mb-5 text-white">Layanan</h4>
+          <ul class="space-y-2.5">
+            <li><a href="#" class="text-sm text-neutral-400 hover:text-desa-300 transition-colors flex items-center gap-2"><iconify-icon icon="solar:alt-arrow-right-linear" width="14"></iconify-icon>Surat Keterangan</a></li>
+            <li><a href="#" class="text-sm text-neutral-400 hover:text-desa-300 transition-colors flex items-center gap-2"><iconify-icon icon="solar:alt-arrow-right-linear" width="14"></iconify-icon>Surat Pengantar</a></li>
+            <li><a href="#" class="text-sm text-neutral-400 hover:text-desa-300 transition-colors flex items-center gap-2"><iconify-icon icon="solar:alt-arrow-right-linear" width="14"></iconify-icon>Perizinan Desa</a></li>
+            <li><a href="#" class="text-sm text-neutral-400 hover:text-desa-300 transition-colors flex items-center gap-2"><iconify-icon icon="solar:alt-arrow-right-linear" width="14"></iconify-icon>Pengaduan Online</a></li>
+            <li><a href="#" class="text-sm text-neutral-400 hover:text-desa-300 transition-colors flex items-center gap-2"><iconify-icon icon="solar:alt-arrow-right-linear" width="14"></iconify-icon>Transparansi Dana</a></li>
+          </ul>
+        </div>
+        <!-- Col 4 -->
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-wider mb-5 text-white">Kontak</h4>
+          <ul class="space-y-3">
+            <li class="flex items-start gap-2.5 text-sm text-neutral-400">
+              <iconify-icon icon="solar:map-point-linear" width="16" class="text-desa-400 mt-0.5 flex-shrink-0"></iconify-icon>
+              Jl. Raya Pasawahan No. 123, Purwakarta
+            </li>
+            <li class="flex items-center gap-2.5 text-sm text-neutral-400">
+              <iconify-icon icon="solar:phone-linear" width="16" class="text-desa-400 flex-shrink-0"></iconify-icon>
+              (021) 8765-4321
+            </li>
+            <li class="flex items-center gap-2.5 text-sm text-neutral-400">
+              <iconify-icon icon="solar:letter-linear" width="16" class="text-desa-400 flex-shrink-0"></iconify-icon>
+              desa@padamukti.desa.id
+            </li>
+          </ul>
+          <!-- Mini Map -->
+          <div class="mt-5 rounded-lg overflow-hidden border border-white/10 h-32">
+            <img src="https://picsum.photos/seed/desa-minimap/400/200.jpg" alt="Peta Lokasi" class="w-full h-full object-cover opacity-60 hover:opacity-80 transition-opacity">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bottom Footer -->
+    <div class="border-t border-white/10">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-10 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
+        <p class="text-xs text-neutral-500">&copy; 2025 Desa Padamukti. Hak cipta dilindungi undang-undang.</p>
+        <div class="flex items-center gap-4 text-xs text-neutral-500">
+          <span>Dibuat dengan <iconify-icon icon="solar:heart-bold" width="12" class="text-red-400 inline-block mx-0.5"></iconify-icon> menggunakan OpenSID</span>
+          <span class="hidden md:inline">|</span>
+          <a href="#" class="hover:text-neutral-300 transition-colors">Kebijakan Privasi</a>
+          <a href="#" class="hover:text-neutral-300 transition-colors">Peta Situs</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== BACK TO TOP ===== -->
+  <button id="backToTop" class="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full bg-desa-600 text-white shadow-lg flex items-center justify-center opacity-0 translate-y-4 transition-all duration-300 hover:bg-desa-700 hover:-translate-y-0.5" style="pointer-events: none;">
+    <iconify-icon icon="solar:alt-arrow-up-linear" width="20"></iconify-icon>
+  </button>
+
+  <script>
+    // ===== MOBILE MENU =====
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const closeMobileMenuBtn = document.getElementById('closeMobileMenu');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.add('open'));
+    closeMobileMenuBtn.addEventListener('click', () => mobileMenu.classList.remove('open'));
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+    });
+
+    // ===== HERO SLIDER =====
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.slide-dot');
+    let currentSlide = 0;
+    let slideInterval;
+
+    function goToSlide(index) {
+      slides.forEach(s => s.style.opacity = '0');
+      dots.forEach(d => { d.classList.remove('bg-white'); d.classList.add('bg-white/40'); d.style.width = '1rem'; });
+      slides[index].style.opacity = '1';
+      dots[index].classList.add('bg-white');
+      dots[index].classList.remove('bg-white/40');
+      dots[index].style.width = '2rem';
+      currentSlide = index;
+    }
+
+    function nextSlide() {
+      goToSlide((currentSlide + 1) % slides.length);
+    }
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        clearInterval(slideInterval);
+        goToSlide(parseInt(dot.dataset.index));
+        slideInterval = setInterval(nextSlide, 5000);
+      });
+    });
+
+    slideInterval = setInterval(nextSlide, 5000);
+
+    // ===== INTERSECTION OBSERVER (Scroll Animations) =====
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Counter animation
+          const counters = entry.target.querySelectorAll('.counter');
+          counters.forEach(counter => {
+            if (counter.dataset.animated) return;
+            counter.dataset.animated = 'true';
+            const target = parseInt(counter.dataset.target);
+            const duration = 2000;
+            const start = performance.now();
+            function update(now) {
+              const elapsed = now - start;
+              const progress = Math.min(elapsed / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 4);
+              counter.textContent = Math.round(target * eased).toLocaleString('id-ID');
+              if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+          });
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.observe-fade').forEach(el => observer.observe(el));
+
+    // ===== BACK TO TOP =====
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 600) {
+        backToTop.style.opacity = '1';
+        backToTop.style.transform = 'translateY(0)';
+        backToTop.style.pointerEvents = 'auto';
+      } else {
+        backToTop.style.opacity = '0';
+        backToTop.style.transform = 'translateY(1rem)';
+        backToTop.style.pointerEvents = 'none';
+      }
+    });
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ===== CONTACT FORM =====
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const toast = document.getElementById('formToast');
+      toast.classList.remove('hidden');
+      toast.classList.add('animate-fade-up');
+      this.reset();
+      setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('animate-fade-up');
+      }, 5000);
+    });
+
+    // ===== STICKY NAV SHADOW ON SCROLL =====
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 10) {
+        header.style.boxShadow = '0 1px 3px rgba(0,0,0,0.08)';
+      } else {
+        header.style.boxShadow = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
